@@ -12,30 +12,32 @@ if (!BOT_TOKEN || !SOURCE_CHANNEL_ID || !TARGET_CHANNEL_ID) {
 
 const bot = new Telegraf(BOT_TOKEN);
 
-bot.on('message', async (ctx) => {
-    const message = ctx.message;
+bot.on('channel_post', async (ctx) => {
+    const msg = ctx.channelPost;
+
+    console.log('receive message ...', {
+        msg
+    });
 
     // Ensure the message is from the source channel
-    if (message.chat.id !== SOURCE_CHANNEL_ID) return;
+    if (ctx.chat.id !== SOURCE_CHANNEL_ID) return;
 
     // Skip if it's part of an album (has media_group_id)
-    if (message.media_group_id) return;
+    if (msg.hasOwnProperty('media_group_id')) return;
 
     try {
         await ctx.telegram.forwardMessage(
             TARGET_CHANNEL_ID,
             SOURCE_CHANNEL_ID,
-            message.message_id
+            msg.message_id
         );
-        console.log(`Forwarded message ID: ${message.message_id}`);
+        console.log(`Forwarded message ${msg.message_id}`);
     } catch (err) {
-        console.error(`Failed to forward message ID: ${message.message_id}`, err);
+        console.error(`Failed to forward message ID: ${msg.message_id}`, err);
     }
 });
 
-bot.launch().then(() => {
-    console.log('Bot is running...');
-});
+bot.launch();
 
 // Graceful shutdown
 process.once('SIGINT', () => bot.stop('SIGINT'));
