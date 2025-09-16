@@ -1,7 +1,6 @@
 {
   "name": "telegram-forward-sayed-posts-bot",
   "version": "1.0.0",
-  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
