@@ -1,5 +1,5 @@
 require('dotenv').config();
-import { Telegraf } from "telegraf";
+import { Telegraf } from 'telegraf';
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
@@ -14,6 +14,12 @@ bot.on("channel_post", async (ctx) => {
 
     // Skip media groups (albums)
     if (msg.media_group_id) return;
+
+    // Skip if forwarded
+    if(msg.forward_date) {
+        console.log('it forwarded', msg.forward_date);
+        return;
+    }
 
     try {
         await ctx.telegram.forwardMessage(
