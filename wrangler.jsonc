@@ -1,0 +1,9 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "telegram-forward-posts-bot",
+  "main": "src/index.js",
+  "compatibility_date": "2026-08-20",
+  "observability": {
+    "enabled": true
+  }
+}
